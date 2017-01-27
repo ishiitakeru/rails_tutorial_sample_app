@@ -1,7 +1,13 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <title>SampleApp</title>
+    <title>
+      <% if(@title.present?) %>
+        <%= @title %>
+      <% else %>
+        sample app
+      <% end %>
+    </title>
     <%= csrf_meta_tags %>
 
     <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track': 'reload' %>
@@ -9,6 +15,16 @@
   </head>
 
   <body>
+    <header>
+      <%= link_to_unless_current "HOME",    :controller => "static_pages", :action => "home"    %> | 
+      <%= link_to_unless_current "HELP",    :controller => "static_pages", :action => "help"    %> | 
+      <%= link_to_unless_current "ABOUT",   :controller => "static_pages", :action => "about"   %> | 
+      <%= link_to_unless_current "CONTACT", :controller => "static_pages", :action => "contact" %>
+    </header>
+
     <%= yield %>
+
+    <footer>
+    </footer>
   </body>
 </html>
