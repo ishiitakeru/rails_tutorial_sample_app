@@ -24,4 +24,8 @@ class StaticPagesController < ApplicationController
   def contact
     @title = "Contact"
   end
+
+  def login
+    @title = "Log in"
+  end
 end
