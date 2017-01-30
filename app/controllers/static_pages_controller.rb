@@ -10,18 +10,18 @@ class StaticPagesController < ApplicationController
   @class_instance_value_test = "class_instance_value_test"
 
   def home
-    @title = "Home | #{@@common_title}"
+    @title = "Home"
   end
 
   def help
-    @title = "Help | #{@@common_title}"
+    @title = "Help"
   end
 
   def about
-    @title = "About | #{@@common_title}"
+    @title = "About"
   end
 
   def contact
-    @title = "Contact | #{@@common_title}"
+    @title = "Contact"
   end
 end
