@@ -2,11 +2,7 @@
 <html>
   <head>
     <title>
-      <% if(@title.present?) %>
-        <%= @title %>
-      <% else %>
-        sample app
-      <% end %>
+      <%= full_title(@title) %>
     </title>
     <%= csrf_meta_tags %>
 
