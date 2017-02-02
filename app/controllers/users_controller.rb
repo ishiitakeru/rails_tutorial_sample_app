@@ -7,6 +7,8 @@ class UsersController < ApplicationController
   # 詳細表示
   def show
     @user = User.find(params[:id])
+    @title = @user.name
+    #debugger
   end
 
 end
