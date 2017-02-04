@@ -11,7 +11,20 @@
 <%= render 'layouts/header' %>
 
 <div class="container">
+  <% #フラッシュメッセージ出力 %>
+  <% flash.each do |message_type, message| %>
+    <%= content_tag(
+      :div,    # タグ指定
+      message, # 内容指定
+      class: "alert alert-#{message_type}"
+    ) %>
+
+  <% end %>
+
+  <% #本体コンテンツ %>
   <%= yield %>
+
+  <% #フッター %>
   <%= render 'layouts/footer' %>
 </div>
 

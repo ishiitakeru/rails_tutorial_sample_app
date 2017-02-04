@@ -22,7 +22,8 @@ Rails.application.routes.draw do
   # ユーザー関連
   #---------------------------------------------------------
   # get 'users/new'
-  get '/signup', to: 'users#new'
+  get  '/signup', to: 'users#new'
+  post '/signup', to: 'users#create'
 
   # ユーザーテーブルに基づくリソース
   resources :users
