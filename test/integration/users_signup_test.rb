@@ -56,6 +56,9 @@ class UsersSignupTest < ActionDispatch::IntegrationTest
     assert_select 'div.alert-success'
 
     assert_not flash[:success].empty? # フラッシュメッセージがカラではないことを確認
+
+    # ログインできているか確認
+    assert is_logged_in?
   end
 
 end

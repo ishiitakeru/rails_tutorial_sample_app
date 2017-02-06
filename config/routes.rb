@@ -16,7 +16,15 @@ Rails.application.routes.draw do
   # 以下の書き方をすると「_path」「_url」のlink_to指定が有効になる。
   get '/contact', to: 'static_pages#contact'
 
-  get '/login', to: 'static_pages#login'
+
+  #---------------------------------------------------------
+  # ログイン関連
+  #---------------------------------------------------------
+  # get    'sessions/new'
+  get    '/login',  to: 'sessions#new'
+  post   '/login',  to: 'sessions#create'
+  delete '/logout', to: 'sessions#destroy' #POSTではなくDELETEであるところに注意
+
 
   #---------------------------------------------------------
   # ユーザー関連

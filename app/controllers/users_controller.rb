@@ -21,6 +21,8 @@ class UsersController < ApplicationController
 
     if(@user.save())
       # 新規作成成功
+      # ログインさせる
+      log_in @user
 
       # フラッシュメッセージのセット
       flash[:success] = "Welcome to the Sample App!"
