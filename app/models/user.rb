@@ -39,6 +39,19 @@ class User < ApplicationRecord
     length:     { minimum: 6 },
   )
 
+
+  #-----------------------------------------------------------------------
+  # クラスメソッド
+  #-----------------------------------------------------------------------
+
+  # 渡された文字列のハッシュ値を返す
+  def User.digest(string)
+    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
+                                                  BCrypt::Engine.cost
+    BCrypt::Password.create(string, cost: cost)
+  end
+
+
   #-----------------------------------------------------------------------
   # コールバック
   #-----------------------------------------------------------------------
@@ -51,4 +64,6 @@ class User < ApplicationRecord
     # 末尾に「!」を付けると呼び出すだけで呼び出し元を変更する
     self.email.downcase!
   }
+
+
 end

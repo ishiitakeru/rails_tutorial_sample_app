@@ -27,7 +27,6 @@ class SessionsController < ApplicationController
       # ユーザー情報ページにリダイレクト。引数はユーザーインスタンス
       redirect_to user
 
-
     else
       # 認証失敗
 
@@ -47,6 +46,10 @@ class SessionsController < ApplicationController
   # -----------------------------------------------------------
   # delete ログアウト
   def destroy
+    # ヘルパーに作成したログアウトメソッド呼び出し
+    log_out
+
+    redirect_to root_url
   end
 
 end
