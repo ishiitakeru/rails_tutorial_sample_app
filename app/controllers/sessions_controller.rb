@@ -21,8 +21,9 @@ class SessionsController < ApplicationController
     )
       # 認証成功
 
-      # ヘルパーに作成したログインメソッド呼び出し
+      # sessionヘルパーに作成したメソッド呼び出し
       log_in(user)
+      remember(user) # クッキーを利用してログイン状態永続化
 
       # ユーザー情報ページにリダイレクト。引数はユーザーインスタンス
       redirect_to user

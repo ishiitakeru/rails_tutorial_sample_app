@@ -7,6 +7,12 @@ class User < ApplicationRecord
   has_secure_password
 
   #-----------------------------------------------------------------------
+  # クラス変数
+  # データベースにフィールドがなくてもここで設定すれば「モデル名.変数名」が有効になる。
+  #-----------------------------------------------------------------------
+  attr_accessor :remember_token
+
+  #-----------------------------------------------------------------------
   # ヴァリデーション設定
   #-----------------------------------------------------------------------
 
@@ -42,13 +48,58 @@ class User < ApplicationRecord
 
   #-----------------------------------------------------------------------
   # クラスメソッド
+  # class << self ブロックで設定する
   #-----------------------------------------------------------------------
+  class << self
+    # 渡された文字列のハッシュ値を返す
+    def digest(string)
+      cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
+                                                    BCrypt::Engine.cost
+      BCrypt::Password.create(string, cost: cost)
+    end
 
-  # 渡された文字列のハッシュ値を返す
-  def User.digest(string)
-    cost = ActiveModel::SecurePassword.min_cost ? BCrypt::Engine::MIN_COST :
-                                                  BCrypt::Engine.cost
-    BCrypt::Password.create(string, cost: cost)
+    # ランダムなトークンを返す。ログイン保持（remember_me機能）に使うremember_token生成などに利用。
+    def new_token
+      SecureRandom.urlsafe_base64
+    end
+  end
+
+
+  #-----------------------------------------------------------------------
+  # public functions
+  #-----------------------------------------------------------------------
+  # ログイン状態の記憶
+  def remember
+    # アクセサ（プロパティのつもりで扱っているが）で設定した変数にアクセスするには「self.」をつける
+    self.remember_token = User.new_token
+
+    # ヴァリデーションを素通りしてDBを更新するメソッド「update_attribute」
+    update_attribute(
+      :remember_digest,
+      User.digest(self.remember_token)
+    )
+  end
+
+
+  # ------------------------------------------------------------
+  # 渡されたトークンがダイジェストと一致したらtrueを返す
+  def authenticated?(remember_token)
+    #                    このremember_digestはおそらく検索結果（ユーザー一人分）のremember_digestの値のこと（self.が省略されている）
+    BCrypt::Password.new(remember_digest).is_password?(remember_token)
+    #                                                  このremember_tokenはメソッドの引数
+
+    # BCryptのis_password?メソッドは、「暗号化する前の値」と「暗号化したあとの値」との関係を調べるメソッドだと思われる。
+  end
+
+
+  #-----------------------------------------------------------------------
+  # ログイン状態の忘却（クッキーの削除）
+  def forget
+    # ヴァリデーションを素通りしてDBを更新するメソッド「update_attribute」
+    update_attribute(
+      :remember_digest,
+      nil
+    )
   end
 
 
