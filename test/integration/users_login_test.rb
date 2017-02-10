@@ -101,6 +101,9 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     # ログイン確認変数。ログアウト状態か確認。
     assert_not is_logged_in?
 
+    # 2番目のウィンドウでログアウトをクリックするユーザーをシミュレートする
+    delete logout_path
+
     # リダイレクト追跡
     assert_redirected_to root_url
     follow_redirect!
@@ -108,5 +111,22 @@ class UsersLoginTest < ActionDispatch::IntegrationTest
     assert_select "a[href=?]", login_path
     assert_select "a[href=?]", logout_path,      count: 0
     assert_select "a[href=?]", user_path(@user), count: 0
+  end
+
+  # 「remember me」指定でログイン
+  test "login with remembering" do
+    # テストのヘルパーに記述したlog_in_as を使用
+    log_in_as(@user, remember_me: "1")
+    # テスト内ではハッシュにシンボルキー （[:name]）は使えないので文字列キーにしている
+    assert_not_nil cookies['remember_token']
+    assert_equal cookies['remember_token'], assigns(:user).remember_token
+  end
+
+  # 「remember me」指定しないでログイン
+  test "login without remembering" do
+    # テストのヘルパーに記述したlog_in_as を使用
+    log_in_as(@user, remember_me: '0')
+    # テスト内ではハッシュにシンボルキー （[:name]）は使えないので文字列キーにしている
+    assert_nil cookies['remember_token']
   end
 end

@@ -84,11 +84,15 @@ class User < ApplicationRecord
   # ------------------------------------------------------------
   # 渡されたトークンがダイジェストと一致したらtrueを返す
   def authenticated?(remember_token)
-    #                    このremember_digestはおそらく検索結果（ユーザー一人分）のremember_digestの値のこと（self.が省略されている）
-    BCrypt::Password.new(remember_digest).is_password?(remember_token)
-    #                                                  このremember_tokenはメソッドの引数
-
-    # BCryptのis_password?メソッドは、「暗号化する前の値」と「暗号化したあとの値」との関係を調べるメソッドだと思われる。
+    if(self.remember_digest.nil?)
+      return false
+    else
+      #                    このremember_digestはおそらく検索結果（ユーザー一人分）のremember_digestの値のこと（self.が省略されている）
+      BCrypt::Password.new(remember_digest).is_password?(remember_token)
+      #                                                  このremember_tokenはメソッドの引数
+  
+      # BCryptのis_password?メソッドは、「暗号化する前の値」と「暗号化したあとの値」との関係を調べるメソッドだと思われる。
+    end
   end
 
 

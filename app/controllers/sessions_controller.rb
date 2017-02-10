@@ -13,20 +13,23 @@ class SessionsController < ApplicationController
     @title = "Log in"
 
     # ユーザーをメールアドレスから検索
-    user = User.find_by(email: params[:session][:email].downcase)
+    @user = User.find_by(email: params[:session][:email].downcase)
 
     if(
-      (user.present?)&&
-      (user.authenticate(params[:session][:password])) # Userモデルクラスに設定した has_secure_password によって有効になった authenticate メソッドを使う。パスワードが間違っていればfalse
+      (@user.present?)&&
+      (@user.authenticate(params[:session][:password])) # Userモデルクラスに設定した has_secure_password によって有効になった authenticate メソッドを使う。パスワードが間違っていればfalse
     )
       # 認証成功
 
       # sessionヘルパーに作成したメソッド呼び出し
-      log_in(user)
-      remember(user) # クッキーを利用してログイン状態永続化
+      log_in(@user)
+
+      # ログイン状態を覚えておくチェックが入っていればクッキーを使ったログイン状態保持を行う
+      #                              条件      trueの時         falseの時
+      params[:session][:remember_me] == '1' ? remember(@user) : forget(@user) # クッキーを利用してログイン状態永続化
 
       # ユーザー情報ページにリダイレクト。引数はユーザーインスタンス
-      redirect_to user
+      redirect_to @user
 
     else
       # 認証失敗
@@ -48,7 +51,7 @@ class SessionsController < ApplicationController
   # delete ログアウト
   def destroy
     # ヘルパーに作成したログアウトメソッド呼び出し
-    log_out
+    log_out if log_in?
 
     redirect_to root_url
   end

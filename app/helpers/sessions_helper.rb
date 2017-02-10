@@ -48,6 +48,8 @@ module SessionsHelper
       #   1. 暗号化されたユーザーIDのチェック
       #   2. 暗号化されたremember_tokenのチェック
 
+      # raise #テストがパスすればここがテストされていないことがわかる
+
       user = User.find_by(id: user_id)
 
       # 認証済みチェック（暗号化されたユーザーIDだけじゃなくクッキーの認証のためのトークンも検査する）
