@@ -22,6 +22,8 @@
 
 # 無視拡張子
 *.bak
+*.DS_Store
+*.ruby-version
 
 # guard自動テスト関係
 # Ignore Spring files.

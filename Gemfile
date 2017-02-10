@@ -1,6 +1,8 @@
 source 'https://rubygems.org'
 
-gem 'rails',        '5.0.0.1'
+# gem 'rails',        '5.0.0.1'
+# rails 5.0.0.1 と ‥ruby2.4.0 の組み合わせだとセキュリティキーのビット数エラーが出るのでrailsのヴァージョンを変更する
+gem 'rails',        '5.0.1'
 
 gem 'bootstrap-sass', '3.3.6'
 gem 'bcrypt',         '3.1.11'
