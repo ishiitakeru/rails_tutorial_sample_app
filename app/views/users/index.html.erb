@@ -1,0 +1,13 @@
+
+<h1>All users</h1>
+
+<% #ページネーションのためのリンクパーツ。bundleにインストールした「will_pagenate」によって実現されている %>
+<%= will_paginate %>
+
+<ul class="users">
+  <% #パーシャルにリストを渡すとeach文を書かなくても自動で展開してレンダリングしてくれる %>
+  <%= render @users %>
+</ul>
+
+<% #ページネーションのためのリンクパーツ。bundleにインストールした「will_pagenate」によって実現されている %>
+<%= will_paginate %>

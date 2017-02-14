@@ -29,7 +29,8 @@ class SessionsController < ApplicationController
       params[:session][:remember_me] == '1' ? remember(@user) : forget(@user) # クッキーを利用してログイン状態永続化
 
       # ユーザー情報ページにリダイレクト。引数はユーザーインスタンス
-      redirect_to @user
+      # リダイレクトすべき記憶済みのURLがあったらそっちにリダイレクト（ログインせずにログイン必要なページにアクセスし、ログイン画面にリダイレクトされた場合など）
+      redirect_back_or(@user)
 
     else
       # 認証失敗

@@ -1,0 +1,21 @@
+<% # 呼び出し元から渡されるときは「@users」。レイルズはパーシャルでは自動的にこれを「user」として展開して認識してくれる。なのでeachを省略できる %>
+<li>
+  <%= gravatar_for user, size: 50 %>
+  <%# = link_to "#{i+1}.[#{user.id}]#{user.name}", user %>
+  <%= link_to user.name, user %>
+
+  <% # ログイン中のユーザーが管理者ユーザーなら削除リンク表示 %>
+  <% # 且つ、管理ユーザーであっても自分自身は削除できないようにする %>
+  <% if((current_user.admin?)&&(current_user != user)) %>
+     | 
+    <%= link_to(
+      "delete",
+      user,
+      {
+        method: :delete,                # 第三引数でメソッドを指定することでdestroyメソッドに処理を渡せる。
+        data: { confirm: "You sure?" }, # 第三引数でJavaScriptの確認ダイアログ表示指定を追加できる。
+      }
+    ) %>
+  <% end %>
+</li>
+
