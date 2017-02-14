@@ -43,6 +43,7 @@ class User < ApplicationRecord
     :password,
     presence:   true,
     length:     { minimum: 6 },
+    allow_nil: true,      # パスワードの空欄は許可する。has_secure_password指定があるので新規作成時には空欄だとちゃんとエラーになる。更新時のみこの指定が活きる。
   )
 
 

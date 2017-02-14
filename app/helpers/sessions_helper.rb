@@ -61,12 +61,26 @@ module SessionsHelper
 
   end
 
+
+  # ------------------------------------------------------------
+  # ログイン中のユーザーかどうかを返す
+  def current_user?(user)
+    return (user == current_user())
+  end
+
+
   # ------------------------------------------------------------
   # ログインしているかどうかを返す。
   # 
   # @return ログインしていていればtrue / ログインしていなければfalse
   def log_in?
     !current_user.nil?
+  end
+
+  # ------------------------------------------------------------
+  # ログインしているかどうかを返す。log_in? のエイリアス。
+  def logged_in?
+    log_in?
   end
 
   # ------------------------------------------------------------
@@ -78,6 +92,21 @@ module SessionsHelper
     session.delete(:user_id)
 
     @current_user = nil
+  end
+
+  # ------------------------------------------------------------
+  # 記憶したURL（もしくはディフォルト値）にリダイレクト
+  def redirect_back_or(default)
+    redirect_to(session[:forwarding_url] || default)
+    # 記録していたURLを削除
+    session.delete(:forwarding_url)
+  end
+
+  # ------------------------------------------------------------
+  # アクセスしようとしたURLを覚えておく
+  # セッションを利用する
+  def store_location()
+    session[:forwarding_url] = request.original_url if request.get?
   end
 
 end
